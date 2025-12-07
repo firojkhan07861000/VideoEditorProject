@@ -1,4 +1,4 @@
-name: Final Fix Build
+name: Old Is Gold Build
 
 on:
   push:
@@ -14,19 +14,22 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10' 
+        python-version: '3.9'
         
-    - name: Install Libraries
+    - name: Install Stable Libraries
       run: |
-        pip install --upgrade pip
-        pip install moviepy opencv-python numpy pyinstaller imageio imageio-ffmpeg decorator
+        python -m pip install --upgrade pip
+        # Hum specific purana version use karenge jo 100% stable hai
+        pip install moviepy==1.0.3 imageio==2.9.0 imageio-ffmpeg numpy==1.23.5 opencv-python decorator==4.4.2
+        pip install pyinstaller
         
-    - name: Build EXE (Clean Version)
+    - name: Build EXE
       run: |
-        pyinstaller --onefile --name="MyVideoTool" main.py --hidden-import=moviepy --copy-metadata=imageio --copy-metadata=requests
+        # Ab humein metadata copy karne ki zaroorat nahi padegi
+        pyinstaller --onefile --name="VideoBypass_Final" main.py --hidden-import=moviepy --hidden-import=imageio --hidden-import=imageio_ffmpeg
         
     - name: Upload EXE
       uses: actions/upload-artifact@v4
       with:
-        name: Final_Software
-        path: dist/MyVideoTool.exe
+        name: Download_Me_Now
+        path: dist/VideoBypass_Final.exe
