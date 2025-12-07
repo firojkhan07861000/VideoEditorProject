@@ -1,8 +1,9 @@
-name: Build EXE Fixed
+name: Final Fix Build
 
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,19 +14,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.10' 
         
-    - name: Install Dependencies
+    - name: Install Libraries
       run: |
-        python -m pip install --upgrade pip
-        pip install moviepy opencv-python numpy pyinstaller imageio imageio-ffmpeg
+        pip install --upgrade pip
+        pip install moviepy opencv-python numpy pyinstaller imageio imageio-ffmpeg decorator
         
-    - name: Build EXE (Force Include ImageIO)
+    - name: Build EXE (Clean Version)
       run: |
-        pyinstaller --onefile --name="VideoBypassTool" main.py --hidden-import=numpy --hidden-import=cv2 --hidden-import=imageio --collect-all imageio --copy-metadata=imageio --copy-metadata=tqdm --copy-metadata=requests --copy-metadata=packaging
+        pyinstaller --onefile --name="MyVideoTool" main.py --hidden-import=moviepy --copy-metadata=imageio --copy-metadata=requests
         
     - name: Upload EXE
       uses: actions/upload-artifact@v4
       with:
-        name: MyProjectTool_Fixed
-        path: dist/VideoBypassTool.exe
+        name: Final_Software
+        path: dist/MyVideoTool.exe
