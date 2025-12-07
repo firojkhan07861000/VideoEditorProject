@@ -1,0 +1,30 @@
+name: Build EXE
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install Dependencies
+      run: |
+        pip install moviepy opencv-python numpy pyinstaller
+        
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --name="VideoBypassTool" main.py --hidden-import=numpy --hidden-import=cv2
+        
+    - name: Upload EXE
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyProjectTool
+        path: dist/VideoBypassTool.exe
